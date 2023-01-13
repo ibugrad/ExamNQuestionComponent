@@ -1,0 +1,35 @@
+<template>
+    
+<table class="content-table">
+
+<thead>
+    <tr>
+        <td>Exam Name</td>
+        <td>Exam Total Score</td>
+        <td>Exam Date</td>
+    </tr>
+</thead>
+
+<tbody>
+
+<template if:true={examDetails.data}>
+
+    <template for:each={examDetails.data} for:item="exam">
+<tr key={exam.Id}>
+    <td>{exam.Name}</td>
+    <td>{exam.Total_Score__c}</td>
+    <td>{exam.Date_of_Exam__c}</td>
+</tr>
+<c-exam-question key={exam.Id} exam-id={exam.Id}> </c-exam-question>
+    </template>
+
+</template>
+
+</tbody>
+
+
+</table>
+
+<h1>Avarage of Exams: {calculate.data}</h1>
+
+</template>
