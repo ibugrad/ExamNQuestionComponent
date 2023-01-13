@@ -1,0 +1,15 @@
+trigger QuestionTrigger on Question__c (before insert,after insert,before update,after update,after delete,after undelete) {
+
+    if(trigger.isinsert && trigger.isafter){
+      handlerQuestion.afterinsert(trigger.new);//imagine this method async
+    }
+    if(trigger.isdelete && trigger.isafter){
+      handlerQuestion.afterdelete(trigger.old); 
+    }
+    if(trigger.isundelete && trigger.isafter){
+      handlerQuestion.afterundelete(trigger.new); 
+    }
+    if(trigger.isafter && trigger.isupdate){
+	handlerquestion.afterupdate(trigger.new, trigger.oldMap);    
+    }    
+}
