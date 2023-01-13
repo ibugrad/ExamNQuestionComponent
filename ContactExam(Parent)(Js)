@@ -1,0 +1,8 @@
+import { LightningElement,wire,api } from 'lwc';
+import getExam from '@salesforce/apex/ContactExam.contacttoexam';
+import getresult from '@salesforce/apex/ContactExam.calculate';
+export default class ContactExam extends LightningElement {
+@api recordId;
+@wire(getExam,{cntid:'$recordId'})examDetails;
+@wire(getresult,{cntid:'$recordId'})calculate;
+}
