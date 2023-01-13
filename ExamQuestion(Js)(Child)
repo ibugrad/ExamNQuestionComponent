@@ -1,0 +1,21 @@
+import { LightningElement,api,wire,track } from 'lwc';
+import getQuestions from '@salesforce/apex/ContactExam.examtoQuestion';
+export default class ExamQuestion extends LightningElement {
+    @track columns = [{
+        label: 'Question name',fieldName: 'Name', type: 'text',  },
+    {
+        label: 'Score',fieldName: 'Score__c', type: 'number', },
+      
+];
+
+@api examId;
+@track qscList;
+@track error;
+@wire(getQuestions,{examid:'$examId'})questionDetail({error, data }) {
+    if (data) {
+        this.qscList = data;
+    } else if (error) {
+        this.error = error;
+    }
+  }
+}
