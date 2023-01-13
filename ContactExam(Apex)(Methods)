@@ -1,0 +1,21 @@
+public class ContactExam {
+
+    @AuraEnabled(cacheable=true)
+    public static list<Exam__c> contacttoexam(string cntid){
+        return [Select id,Date_of_Exam__c,Name,Total_Score__c from Exam__c where Contact__c =:cntid Order by Date_of_Exam__c];
+    }
+    @AuraEnabled(cacheable=true)
+    public static list<Question__c> examtoQuestion(string examid){
+        return [Select id,name,score__c from Question__c where Exam__c=:examid];
+    }
+    @AuraEnabled(cacheable=true)
+    public static decimal calculate(string cntid){
+       list<Exam__c> examlist = [Select id,Total_Score__c from Exam__c where Contact__c =:cntid]; 
+        decimal toplam = 0;
+        for(Exam__c ex:examlist){
+            toplam += ex.Total_Score__c;
+        }
+        return toplam/ examlist.size();
+    }
+    
+}
