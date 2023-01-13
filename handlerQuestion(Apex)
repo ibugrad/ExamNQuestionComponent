@@ -1,0 +1,72 @@
+public class handlerQuestion {
+
+    
+         public static void afterinsert(list<question__c> qscList){
+          //whenever new question created, i will change exam rec total score field.
+        set<id> examId = new set <id>();
+        for( question__c qsc:qscList){
+            examId.add(qsc.exam__c); 
+        }
+        list<exam__c> examlist = [Select id,name,total_score__c,(Select score__c from Questions__r) from Exam__c where id IN:examId];
+        //CW: how can we calculate sum of the all score fields and assign it to total score
+        
+        for(exam__c ex:examlist){
+            decimal sumofscore = 0;
+            for(Question__c qsc:ex.Questions__r){
+                if(qsc.Score__c != null){
+                  sumofscore = sumofscore + qsc.score__c;  
+                }
+              }
+            ex.total_score__c = sumofscore;
+        }
+        update examlist;
+    }
+    public static void afterdelete(list<question__c> qscList){
+         set<id> examId = new set <id>();
+        for( question__c qsc:qscList){
+            examId.add(qsc.exam__c); 
+        }
+        list<exam__c> examlist = [Select id,name,total_score__c,(Select score__c from Questions__r) from Exam__c where id IN:examId];
+          for(exam__c ex:examlist){
+            decimal sumofscore = 0;
+            for(Question__c qsc:ex.Questions__r){
+                sumofscore = sumofscore + qsc.score__c;
+            }
+            ex.total_score__c = sumofscore;
+        }
+        update examlist;
+     }
+    public static void afterundelete(list<question__c> qsclist){
+         set<id> examId = new set <id>();
+        for( question__c qsc:qscList){
+            examId.add(qsc.exam__c); 
+        }
+        list<exam__c> examlist = [Select id,name,total_score__c,(Select score__c from Questions__r) from Exam__c where id IN:examId];
+        //CW: how can we calculate sum of the all score fields and assign it to total score
+         for(exam__c ex:examlist){
+            decimal sumofscore = 0;
+            for(Question__c qsc:ex.Questions__r){
+                sumofscore = sumofscore + qsc.score__c;
+            }
+            ex.total_score__c = sumofscore;
+        }
+        update examlist;
+    }
+    public static void afterupdate(list<question__c> qsclist ,map<id,Question__c> oldMap ){
+         set<id> examId = new set <id>();
+        for( question__c qsc:qsclist){
+            examId.add(qsc.exam__c);//math exam 
+            examId.add(oldmap.get(qsc.id).exam__c);//English Exam 
+        }  
+        list<exam__c> examlist = [Select id,name,total_score__c,(Select score__c from Questions__r) from Exam__c where id IN:examId];
+          for(exam__c ex:examlist){
+            decimal sumofscore = 0;
+            for(Question__c qsc:ex.Questions__r){
+                sumofscore = sumofscore + qsc.score__c;
+            }
+            ex.total_score__c = sumofscore;
+        }
+        update examlist;
+    }
+    
+}
