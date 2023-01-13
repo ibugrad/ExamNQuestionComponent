@@ -1,0 +1,16 @@
+<template>
+    
+<details>
+<summary>Question Detail</summary>
+<template if:true={qscList}>
+   
+    <lightning-datatable data={qscList} columns={columns} key-field="Id">
+    </lightning-datatable>
+
+</template>
+</details>
+
+
+
+
+</template>
